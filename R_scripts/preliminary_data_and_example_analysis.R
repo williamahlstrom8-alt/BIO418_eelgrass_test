@@ -10,7 +10,7 @@ library("radiator")
 # load the genlight data
 load("eelgrass_data/genlight_zostera_data.rda")
 
-View(gl_zostera_25)
+#View(gl_zostera_25)
 
 head(gl_zostera_25)
 
@@ -19,14 +19,16 @@ gl_zostera_25@pop
 # view number of individuals per location
 table(pop(gl_zostera_25))
 
-data(gl_zostera_25)
-
-
 # create SNPclone 
 snp_zostera <- as.snpclone(gl_zostera_25)
 snp_zostera
 view(snp_zostera)
 head(mll(snp_zostera, "original"), 20)
+
+data(monpop)
+monpop
+
+head(mll(monpop, "original"), 20) # Showing the definitions for the first 20 samples
 
 # change mll to custom
 mll(x) <- "custom"
@@ -228,3 +230,34 @@ e <- .Machine$double.eps^0.5
 # Using the default farthest neighbor algorithm to collapse genotypes
 mlg.filter(monpop, distance = bruvo.dist, replen = reps) <- (0.5/13) + e
 montabf <- mlg.table(monpop, strata = ~Symptom/Year)
+
+(monstatf <- diversity_stats(montabf, CF = myCF))
+
+monstat2 - monstatf # Take the difference from the unfiltered
+
+mll(monpop) <- "original"
+
+(monrare <- diversity_ci(montab, n = 100L, rarefy = TRUE, raw = FALSE))
+
+nmll(monpop, "original")
+
+nmll(monpop, "contracted")
+
+mll(monpop) <- "contracted"
+
+monpop %>%
+  clonecorrect(strata = NA) %>%  # 1. clone correct whole data set
+  dist() %>%                     # 2. calculate distance
+  sum()                          # 3. take the sum of the distance
+
+set.seed(999)
+monpop[sample(nInd(monpop))] %>% # 1. shuffle samples
+  clonecorrect(strata = NA) %>%  # 2. clone correct whole data set
+  dist() %>%                     # 3. calculate distance
+  sum()                          # 4. take the sum of the distance
+
+set.seed(1000)
+monpop[sample(nInd(monpop))] %>% # 1. shuffle samples
+  clonecorrect(strata = NA) %>%  # 2. clone correct whole data set
+  dist() %>%                     # 3. calculate distance
+  sum()                          # 4. take the sum of the distance
