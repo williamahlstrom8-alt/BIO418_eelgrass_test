@@ -41,7 +41,7 @@ print(nearest_thresh  <- cutoff_predictor(zost_filtered$nearest$THRESHOLDS))
 
 #MLG filter####
 #apply the filter
-mlg.filter(snp_zostera, distance = bitwise.dist, algorithm = "f") <- farthest_thresh
+mlg.filter(snp_zostera, distance = bitwise.dist, algorithm = "a") <- average_thresh
 
 snp_zostera
 
