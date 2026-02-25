@@ -153,7 +153,7 @@ mlg.filter(snp_zostera, distance = eg_mat, threshold = zost_dist + .Machine$doub
 snp_zostera
 
 
-## determine threshold####
+## !!!determine threshold####
 plot.phylo(upgma(eg_mat))
 eg_mat
 
