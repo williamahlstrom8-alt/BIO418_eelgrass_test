@@ -109,3 +109,13 @@ add.scatter.eig(pca.eg$eig[1:50],3,1,3, ratio=.3)
 
 eig.perc <- 100*pca.eg$eig/sum(pca.eg$eig)
 head(eig.perc)
+
+##diveRsity trial####
+library(diveRsity)
+library(radiator)
+new_ind_name <- paste0(gl_zostera_no_rep$pop, 1:length(gl_zostera_no_rep$pop))
+zost_renamed <- `indNames<-` (gl_zostera_no_rep, new_ind_name)
+
+# Time to write the genepopfile
+genomic_converter(data = zost_renamed, output = c("genepop"), filename = "eelgrass")
+
