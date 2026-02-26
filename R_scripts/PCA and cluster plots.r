@@ -107,4 +107,24 @@ s.class(pca$scores,
 
 ### Find clusters with the appropriate K-value ####
 
-grp <- find.clusters(snp_zostera, n.pca=50, max.n=40,scale=FALSE)
+grp <- find.clusters(snp_zostera, n.pca=50, max.n=50,scale=FALSE)
+
+grp$grp %>% as.vector
+
+dapc <- dapc(snp_zostera, pop=grp$grp, n.pca=50)
+
+# Scatter plot #
+
+scatter(dapc, xax=1, yax=2, grp=dapc$grp, 
+        col=transp(c("forestgreen","dodgerblue4","deeppink","orange2")),
+        pch=19, bg="white",cstar = 1, cellipse = 1,clabel = 1,scree.da=FALSE,
+        scree.pca=FALSE)
+
+# Save this plot for later #
+dapc_plot <- recordPlot()
+
+## Plotting PCA again ####
+
+s.class(pca$scores, fac=dapc$grp, clab=1,
+        col = transp(funky(length(unique(dapc$grp)))), 
+        csta=1, cpoint=2, cellipse =1, xax=1, yax=2)
