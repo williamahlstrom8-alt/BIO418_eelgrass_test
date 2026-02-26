@@ -87,3 +87,25 @@ fst_boot <- boot.ppfst(eg_dat_num) # This might take a while
 fst_boot$ll
 # upper CI
 fst_boot$ul
+
+##Multivariate analsis####
+x.eg <- tab(gl_zostera_no_rep, freq=TRUE, NA.method="mean")
+pca.eg <- dudi.pca(x.eg, center=TRUE, scale=FALSE, scannf = FALSE, nf = 3)
+
+pca.eg
+
+###basic PCA####
+s.class(pca.eg$li, fac=pop(gl_zostera_no_rep), col=funky(15))
+
+###more advanced####
+s.class(pca.eg$li, fac=pop(gl_zostera_no_rep), col=transp(funky(15),.6), axesel=FALSE, cstar=0, cpoint=3)
+add.scatter.eig(pca.eg$eig[1:50],3,1,2, ratio=.3)
+
+### 1st & 3rd axis####
+s.class(pca.eg$li, fac=pop(gl_zostera_no_rep),
+        xax=1, yax=3, col=transp(funky(15),.6),
+        axesel=FALSE, cstar=0, cpoint=3)
+add.scatter.eig(pca.eg$eig[1:50],3,1,3, ratio=.3)
+
+eig.perc <- 100*pca.eg$eig/sum(pca.eg$eig)
+head(eig.perc)
