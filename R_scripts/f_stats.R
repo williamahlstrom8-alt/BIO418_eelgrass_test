@@ -119,3 +119,21 @@ zost_renamed <- `indNames<-` (gl_zostera_no_rep, new_ind_name)
 # Time to write the genepopfile
 genomic_converter(data = zost_renamed, output = c("genepop"), filename = "eelgrass")
 
+##StrataG####
+#devtools::install_github('ericarcher/strataG', build_vignettes = TRUE)
+library("strataG") #OBS!!! UNCOMMENT ABOVE IF THIS DOESN'T WORK
+
+#Overall test
+ovt_zost <- overallTest(genlight2gtypes(gl_zostera_no_rep),by.locus=F,nrep=1000) #all loci at once
+
+#Pairwise test
+pwt_zost <- pairwiseTest(genlight2gtypes(gl_zostera_no_rep),by.locus=F,nrep=1000) #all loci at once
+
+pwt_summary <- pairwiseSummary(pwt_zost)
+pwt_summary
+
+pwt_summary_fst <- pwt_summary %>% 
+  dplyr::select(label,strata.1,strata.2,n.1,n.2,Fst,Fst_p.val) %>% 
+  mutate(Fst_p.val_FDR=p.adjust(Fst_p.val))
+pwt_summary_fst
+
