@@ -141,3 +141,74 @@ cols <- c("forestgreen",
 draw.pie(xyz$x, xyz$y, xyz$z,
          radius=0.3,
          col=cols)
+
+# Nytt test # 
+
+countries <- ne_countries(scale = "medium", returnclass = "sf")
+
+# Filtrera till Östersjö + Skagerrak-länder #
+wanted <- c("Sweden","Norway","Denmark","Finland","Germany",
+            "Poland","Estonia","Latvia","Lithuania","Russia")
+
+shape <- countries[countries$name %in% wanted, ]
+
+# Skapa färger per land #
+
+land_colors <- c(
+  Sweden="lightgoldenrod",
+  Norway="lightgreen",
+  Denmark="lightpink",
+  Finland="lightblue",
+  Germany="wheat",
+  Poland="thistle",
+  Estonia="lavender",
+  Latvia="mistyrose",
+  Lithuania="honeydew",
+  Russia="lightcyan"
+)
+
+cols <- land_colors[shape$name]
+
+# Rita kartan zoomad till området #
+
+plot(st_geometry(shape),
+     col = cols,
+     border = "grey40",
+     xlim = c(5, 30),
+     ylim = c(53, 71))
+
+
+draw.pie(xyz$x, xyz$y, xyz$z,
+         radius = 0.3,
+         col = cols)   # ← dina clusterfärger
+
+# Automatisk zoom runt dina pie charts #
+
+# Beräkna bounding box från pie-positioner
+xrange <- range(xyz$x)
+yrange <- range(xyz$y)
+
+# marginal så pies inte kapas
+xpad <- diff(xrange) * 0.25
+ypad <- diff(yrange) * 0.25
+
+# Färgar pie charts efter färgskala #
+
+pie_cols <- c(
+  "forestgreen",
+  "dodgerblue4",
+  "deeppink",
+  "orange2",
+  "gold",
+  "purple"
+)
+
+plot(st_geometry(shape),
+     col = cols,
+     border = "grey40",
+     xlim = c(xrange[1] - xpad, xrange[2] + xpad),
+     ylim = c(yrange[1] - ypad, yrange[2] + ypad))
+
+draw.pie(xyz$x, xyz$y, xyz$z,
+         radius = 0.3,
+         col = pie_cols)   # <- dina klusterfärger
