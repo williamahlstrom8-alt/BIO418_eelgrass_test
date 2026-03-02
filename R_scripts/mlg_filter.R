@@ -40,7 +40,7 @@ print(average_thresh  <- cutoff_predictor(zost_filtered$average$THRESHOLDS))
 #Nearest threshold, same as largest for some reason (idk why)
 print(nearest_thresh  <- cutoff_predictor(zost_filtered$nearest$THRESHOLDS))
 
-#MLG filter####
+#MLG filter UPGMA####
 #apply the filter
 mlg.filter(snp_zostera, distance = bitwise.dist, algorithm = "a") <- average_thresh
 
@@ -65,3 +65,14 @@ nInd(snpclone_cc)
 
 ##Save no clone data####
 saveRDS(snpclone_cc, file = "eelgrass_data/Manipulated_data/clone_corrected_zostera.rds")
+
+# MLG filter farthest####
+#apply the filter
+mlg.filter(snp_zostera, distance = bitwise.dist, algorithm = "f") <- farthest_thresh
+
+snp_zostera
+#returns number of MLGs 
+mlg(snp_zostera)
+
+#plots number of individuals over each MLG for each region
+zost_table <- mlg.table(snp_zostera, strata = ~Region/Site)
