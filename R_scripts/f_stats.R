@@ -88,52 +88,44 @@ fst_boot$ll
 # upper CI
 fst_boot$ul
 
-##Multivariate analsis####
-x.eg <- tab(gl_zostera_no_rep, freq=TRUE, NA.method="mean")
+
+#PCA no clones####
+#import no clones
+cc_zostera <- readRDS("eelgrass_data/Manipulated_data/clone_corrected_zostera.rds")
+
+x.eg <- tab(cc_zostera, freq=TRUE, NA.method="mean")
 pca.eg <- dudi.pca(x.eg, center=TRUE, scale=FALSE, scannf = FALSE, nf = 3)
 
 pca.eg
 
-###basic PCA####
-s.class(pca.eg$li, fac=pop(gl_zostera_no_rep), col=funky(15))
+##basic PCA####
+s.class(pca.eg$li, fac=pop(cc_zostera), col=funky(15))
 
-###more advanced####
-s.class(pca.eg$li, fac=pop(gl_zostera_no_rep), col=transp(funky(15),.6), axesel=FALSE, cstar=0, cpoint=3)
-add.scatter.eig(pca.eg$eig[1:50],3,1,2, ratio=.3)
+##more advanced####
+s.class(pca.eg$li,
+        fac = pop(cc_zostera),
+        col = transp(funky(15), .6),
+        axesel = FALSE,
+        cstar = 0,
+        cpoint = 3)
 
-### 1st & 3rd axis####
-s.class(pca.eg$li, fac=pop(gl_zostera_no_rep),
+# Add axis labels
+mtext(paste0("PC1 (", round(eig.perc[1], 2), "%)"), side = 1, line = 2.5)
+mtext(paste0("PC2 (", round(eig.perc[2], 2), "%)"), side = 2, line = 2.5)
+
+add.scatter.eig(pca.eg$eig[1:50], 3, 1, 2, ratio = .3)
+
+
+## 1st & 3rd axis####
+s.class(pca.eg$li, fac=pop(cc_zostera),
         xax=1, yax=3, col=transp(funky(15),.6),
         axesel=FALSE, cstar=0, cpoint=3)
+
+# Add axis labels
+mtext(paste0("PC1 (", round(eig.perc[1], 2), "%)"), side = 1, line = 2.5)
+mtext(paste0("PC3 (", round(eig.perc[3], 2), "%)"), side = 2, line = 2.5)
+
 add.scatter.eig(pca.eg$eig[1:50],3,1,3, ratio=.3)
 
 eig.perc <- 100*pca.eg$eig/sum(pca.eg$eig)
 head(eig.perc)
-
-##diveRsity trial####
-library(diveRsity)
-library(radiator)
-new_ind_name <- paste0(gl_zostera_no_rep$pop, 1:length(gl_zostera_no_rep$pop))
-zost_renamed <- `indNames<-` (gl_zostera_no_rep, new_ind_name)
-
-# Time to write the genepopfile
-genomic_converter(data = zost_renamed, output = c("genepop"), filename = "eelgrass")
-
-##StrataG####
-#devtools::install_github('ericarcher/strataG', build_vignettes = TRUE)
-library("strataG") #OBS!!! UNCOMMENT ABOVE IF THIS DOESN'T WORK
-
-#Overall test
-ovt_zost <- overallTest(genlight2gtypes(gl_zostera_no_rep),by.locus=F,nrep=1000) #all loci at once
-
-#Pairwise test
-pwt_zost <- pairwiseTest(genlight2gtypes(gl_zostera_no_rep),by.locus=F,nrep=1000) #all loci at once
-
-pwt_summary <- pairwiseSummary(pwt_zost)
-pwt_summary
-
-pwt_summary_fst <- pwt_summary %>% 
-  dplyr::select(label,strata.1,strata.2,n.1,n.2,Fst,Fst_p.val) %>% 
-  mutate(Fst_p.val_FDR=p.adjust(Fst_p.val))
-pwt_summary_fst
-

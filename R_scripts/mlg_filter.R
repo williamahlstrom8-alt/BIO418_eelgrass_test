@@ -11,6 +11,7 @@ library("radiator")
 #data
 snp_zostera <- readRDS("eelgrass_data/Manipulated_data/snp_zostera.rds")
 
+
 #Create distance matrix####
 eg_mat <- bitwise.dist(
   snp_zostera,
@@ -44,7 +45,6 @@ print(nearest_thresh  <- cutoff_predictor(zost_filtered$nearest$THRESHOLDS))
 mlg.filter(snp_zostera, distance = bitwise.dist, algorithm = "a") <- average_thresh
 
 snp_zostera
-
 #returns number of MLGs 
 mlg(snp_zostera)
 
@@ -55,8 +55,11 @@ zost_table <- mlg.table(snp_zostera, strata = ~Region/Site)
 library(poppr)
 
 # Remove clones (keep one per MLG)
-snpclone_cc <- clonecorrect(snp_zostera)
+snp_zostera@pop
+snpclone_cc <- clonecorrect(snp_zostera, strata = ~Site)
+snpclone_cc@pop
 
+popNames(snpclone_cc) <- popNames(snp_zostera)
 # Check new number of individuals
 nInd(snpclone_cc)
 
