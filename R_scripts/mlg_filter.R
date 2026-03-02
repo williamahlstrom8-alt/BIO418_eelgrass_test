@@ -50,3 +50,15 @@ mlg(snp_zostera)
 
 #plots number of individuals over each MLG for each region
 zost_table <- mlg.table(snp_zostera, strata = ~Region/Site)
+
+#Clone correction####
+library(poppr)
+
+# Remove clones (keep one per MLG)
+snpclone_cc <- clonecorrect(snp_zostera)
+
+# Check new number of individuals
+nInd(snpclone_cc)
+
+##Save no clone data####
+saveRDS(snpclone_cc, file = "eelgrass_data/Manipulated_data/clone_corrected_zostera.rds")
