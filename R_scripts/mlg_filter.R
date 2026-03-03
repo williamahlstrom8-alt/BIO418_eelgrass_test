@@ -49,7 +49,8 @@ snp_zostera
 mlg(snp_zostera)
 
 #plots number of individuals over each MLG for each region
-zost_table <- mlg.table(snp_zostera, strata = ~Region/Site)
+zost_table <- mlg.table(snp_zostera)
+
 
 #Clone correction####
 library(poppr)
