@@ -54,9 +54,9 @@ plot(1:10, ce, type="b", pch=19,
 
 # Extrahera ancestry proportions #
 
-best_run <- which.min(cross.entropy(proj, K = 6))
+best_run <- which.min(cross.entropy(proj, K = 8))
 
-qmatrix <- Q(proj, K = 6, run = best_run)
+qmatrix <- Q(proj, K = 8, run = best_run)
 
 
 # Plot admixture-diagram#
@@ -116,7 +116,7 @@ q_long <- q_long %>%
 
 # Rita plot #
 
-anc_plot <- ggplot(q_long,
+anc_plot_3 <- ggplot(q_long,
                    aes(factor(ID), Prob, fill = factor(Cluster))) +
   geom_col(width=1) +
   facet_grid(~fct_inorder(as.factor(Population)),
@@ -135,13 +135,47 @@ anc_plot <- ggplot(q_long,
         panel.grid=element_blank(),
         strip.text=element_text(size=7))
 
-anc_plot
+anc_plot_3
 
 # Lägg till samma färger som tidigare analyser #
 
-cols <- c("forestgreen","dodgerblue4","deeppink","orange2","gold","purple")
+cols <- c("forestgreen","dodgerblue4","deeppink","orange2","gold","purple", "red", "black")
 
-anc_plot + scale_fill_manual(values = cols)
+anc_plot_3R <- anc_plot_3 + scale_fill_manual(values = cols)
 
+anc_plot_3R
 
+# Save this plot for later #
+anc_plot_3R <- recordPlot()
 
+#Take the 3 plots we saved previously, and plot them together
+
+# Ladda paketen #
+
+library(gridExtra)
+library(gridGraphics)
+library(grid)
+
+# Konvertera dina plots till grobs #
+
+g1 <- grid.grabExpr(replayPlot(anc_plot_1R))
+g2 <- grid.grabExpr(replayPlot(anc_plot_2R))
+g3 <- grid.grabExpr(replayPlot(anc_plot_3R))
+
+# Arrangerar plotterna #
+
+grid.arrange(
+  g1,
+  g2,
+  g3,
+  ncol = 3
+)
+
+# Ovanpå #
+
+grid.arrange(
+  g1,
+  g2,
+  g3,
+  ncol = 1
+)
