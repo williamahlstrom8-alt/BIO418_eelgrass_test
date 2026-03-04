@@ -59,4 +59,17 @@ myCF(mlg_table)
 
 # Klassisk klonal fraktion #
 
-1 - myCF(mlg_table)
+goodCF <- 1 - myCF(mlg_table)
+
+class(goodCF)
+str(goodCF)
+
+##convert goodCF to data frame####
+goodCF_df <- data.frame(
+  Population = names(goodCF),
+  ClonalFraction = goodCF
+)
+
+write.csv(goodCF_df, "eelgrass_data/Manipulated_data/goodCF.csv", row.names = FALSE)
+
+
