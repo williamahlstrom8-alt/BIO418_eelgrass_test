@@ -67,6 +67,35 @@ nInd(snpclone_cc)
 ##Save no clone data####
 saveRDS(snpclone_cc, file = "eelgrass_data/Manipulated_data/clone_corrected_zostera.rds")
 
+#MLG table with Clonal fraction####
+##Import CF####
+library(readr)
+goodCF <- read_csv("eelgrass_data/Manipulated_data/goodCF.csv")
+View(goodCF)
+
+##add CF to pop for mlg.table####
+snp_zostera@pop
+#convert dataframe to vector
+clonal_fraction <- setNames(goodCF$ClonalFraction, goodCF$Population)
+
+# Extract current levels
+old_levels <- levels(snp_zostera@pop)
+
+# Create new labels with rounded values (3 decimals looks nice)
+new_levels <- paste0(
+  old_levels,
+  " (",
+  round(clonal_fraction[old_levels], 3),
+  ")"
+)
+
+levels(snp_zostera@pop) <- new_levels
+
+levels(snp_zostera@pop)
+
+#MLG table with clonal fraction
+zost_table_cf <- mlg.table(snp_zostera)
+
 # MLG filter farthest####
 #apply the filter
 mlg.filter(snp_zostera, distance = bitwise.dist, algorithm = "f") <- farthest_thresh
