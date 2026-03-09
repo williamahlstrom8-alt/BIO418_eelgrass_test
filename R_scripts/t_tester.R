@@ -34,7 +34,7 @@ goodCF <- read_csv("eelgrass_data/Manipulated_data/goodCF.csv")
 
 ##split = GOT####
 goodCF$group <- ifelse(goodCF$Population %in% c("KOD","STE","GOT"),
-                       "west", "east")
+                       "saline", "brackish")
 
 #run t-test
 t.test(ClonalFraction ~ group, data = goodCF, alternative = "two.sided")

@@ -10,7 +10,7 @@ library(ape)
 
 
 load("eelgrass_data/genlight_zostera_data.rda")
-
+nInd(gl_zostera_25)
 ##Identify and remove replicates####
 # Identify individuals that are NOT replicates
 keep <- !grepl("-rep$", indNames(gl_zostera_25))
@@ -92,12 +92,15 @@ fst_boot$ul
 #PCA no clones####
 #import no clones
 cc_zostera <- readRDS("eelgrass_data/Manipulated_data/clone_corrected_zostera.rds")
+nInd(cc_zostera)
 
 x.eg <- tab(cc_zostera, freq=TRUE, NA.method="mean")
 pca.eg <- dudi.pca(x.eg, center=TRUE, scale=FALSE, scannf = FALSE, nf = 3)
 
 pca.eg
 
+eig.perc <- 100*pca.eg$eig/sum(pca.eg$eig)
+head(eig.perc)
 ##basic PCA####
 s.class(pca.eg$li, fac=pop(cc_zostera), col=funky(15))
 
@@ -127,5 +130,4 @@ mtext(paste0("PC3 (", round(eig.perc[3], 2), "%)"), side = 2, line = 2.5)
 
 add.scatter.eig(pca.eg$eig[1:50],3,1,3, ratio=.3)
 
-eig.perc <- 100*pca.eg$eig/sum(pca.eg$eig)
-head(eig.perc)
+
