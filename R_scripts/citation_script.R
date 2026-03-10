@@ -11,9 +11,6 @@ citation("dplyr")
 library(viridis)
 citation("viridis")
 
-library(adegenet)
-citation("adegenet")
-
 library(reshape2)
 citation("reshape2")
 
@@ -59,16 +56,7 @@ citation("readr")
 library(ade4)
 citation("ade4")
 
-library(dplyr)
-citation("dplyr")
 
-library(mapplots)
-citation("mapplots")
 
-library(sf)
-citation("sf")
-
-library(rnaturalearth)
-citation("rnaturalearth")
 
 
