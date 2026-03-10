@@ -80,6 +80,8 @@ barplot(t(qmatrix[ord, ]),
 
 # Test för att göra snyggare plot #
 
+## K = 3 ####
+
 library(tidyverse)
 library(forcats)
 

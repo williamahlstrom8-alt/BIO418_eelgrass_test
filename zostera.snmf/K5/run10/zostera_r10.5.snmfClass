@@ -1,5 +1,5 @@
 new("snmfClass", directory = "K5/run10/", snmfClass.file = "zostera_r10.5.snmfClass", 
-    K = 5L, run = 10L, CPU = 1L, seed = 1669724475L, alpha = 10, 
+    K = 5L, run = 10L, CPU = 1L, seed = 1687154741L, alpha = 10, 
     percentage = 0.05, I = 0L, iterations = 200L, entropy = TRUE, 
-    tolerance = 1e-05, crossEntropy = 0.129538972261844, ploidy = 2L, 
+    tolerance = 1e-05, crossEntropy = 0.118347670391381, ploidy = 2L, 
     Q.input.file = "", Q.output.file = "zostera_r10.5.Q", G.output.file = "zostera_r10.5.G")
