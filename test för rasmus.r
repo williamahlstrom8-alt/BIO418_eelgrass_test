@@ -1,0 +1,7 @@
+library(tidyverse)
+view(eelgrass_data)
+usethis::create_github_token()
+usethis::edit_r_environ()
+usethis::git_sitrep()
+usethis::create_from_github("williamahlstrom8-alt/BIO418_eelgrass_test")
+Desktop/BIO418_eelgrass_test/BIO418_eelgrass_test.Rproj
