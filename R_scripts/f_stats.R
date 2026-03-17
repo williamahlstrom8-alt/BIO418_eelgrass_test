@@ -27,11 +27,16 @@ nInd(gl_zostera_no_rep)
 #number of samples per region
 table(pop(gl_zostera_no_rep))
 
+#import clone corrected data
+cc_zostera <- readRDS("eelgrass_data/Manipulated_data/clone_corrected_zostera.rds")
+
+
+
 #Fst calculations####
 ##Convert to data frame####
 # example: convert genlight to a data frame
-zost_mat <- as.matrix(gl_zostera_no_rep)
-zost_df <- data.frame(pop = pop(gl_zostera_no_rep), zost_mat)
+zost_mat <- as.matrix(cc_zostera)
+zost_df <- data.frame(pop = pop(cc_zostera), zost_mat)
 
 ##basic Fst####
 # now suitable for wc()
@@ -59,7 +64,7 @@ ggplot(df, aes(Var1, Var2, fill = value)) +
 ####magma colors####
 ggplot(df, aes(Var1, Var2, fill = value)) +
   geom_tile() +
-  scale_fill_viridis(name = "Fst", option = "magma", direction = -1) +
+  scale_fill_viridis(name = "Fst", option = "magma") +
   theme_minimal() +
   theme(text = element_text(size = 15),axis.text.x = element_text(angle = 90, hjust = 1))+
   labs(x = NULL, y = NULL)
@@ -71,15 +76,15 @@ boxplot(fst_eg, col=funky(15), ylab="Fst", las=2)
 
 ###Fst tree####
 eg.tree <- nj(matFst)
-plot(eg.tree, type="unr", tip.col=funky(nPop(gl_zostera_no_rep)), font=2)
+plot(eg.tree, type="unr", tip.col=funky(nPop(cc_zostera)), font=2)
 add.scale.bar()
 
 ####replace popnames with numbers####
 # change population names to numbers
-pop_num <- as.numeric(gl_zostera_no_rep$pop)
+pop_num <- as.numeric(cc_zostera$pop)
 
 #make a data frame with population numbers in the first column, followed by the data
-eg_dat_num <- data.frame(pop_num,gl_zostera_no_rep[,-1])
+eg_dat_num <- data.frame(pop_num,cc_zostera[,-1])
 
 # Performs bootstrapping over loci of pairwise Fst
 fst_boot <- boot.ppfst(eg_dat_num) # This might take a while
@@ -90,8 +95,7 @@ fst_boot$ul
 
 
 #PCA no clones####
-#import no clones
-cc_zostera <- readRDS("eelgrass_data/Manipulated_data/clone_corrected_zostera.rds")
+
 nInd(cc_zostera)
 
 x.eg <- tab(cc_zostera, freq=TRUE, NA.method="mean")
