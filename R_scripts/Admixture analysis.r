@@ -2,7 +2,7 @@
 
 # Loading file ####
 
-zostera <- readRDS("/Users/rasmusgreen/Desktop/BIO418_eelgrass_test/eelgrass_data/Manipulated_data/clone_corrected_zostera.rds")
+zostera <- readRDS("eelgrass_data/Manipulated_data/clone_corrected_zostera.rds")
 
 class(zostera)
 
@@ -37,18 +37,18 @@ write.geno(geno_matrix, "zostera.geno")
 # Kör admixture-analys (snmf) #
 
 proj <- snmf("zostera.geno",
-             K = 1:10,
+             K = 1:15,
              entropy = TRUE,
-             repetitions = 10,
+             repetitions = 15,
              project = "new")
 
 
 # Hitta optimalt K #
 
-ce <- sapply(1:10, function(k)
+ce <- sapply(1:15, function(k)
   min(cross.entropy(proj, K = k)))
 
-plot(1:10, ce, type="b", pch=19,
+plot(1:15, ce, type="b", pch=19,
      xlab="K", ylab="Cross-entropy")
 
 
@@ -244,13 +244,13 @@ anc_plot_2KR
 
 anc_plot_2KR <- recordPlot()
 
-## K = 7 ####
+## K = 4 ####
 
 # Extrahera ancestry proportions #
 
-best_run <- which.min(cross.entropy(proj, K = 7))
+best_run <- which.min(cross.entropy(proj, K = 4))
 
-qmatrix <- Q(proj, K = 7, run = best_run)
+qmatrix <- Q(proj, K = 4, run = best_run)
 
 
 # Plot admixture-diagram #
@@ -310,7 +310,7 @@ q_long <- q_long %>%
 
 # Rita plot #
 
-anc_plot_7K <- ggplot(q_long,
+anc_plot_4K <- ggplot(q_long,
                       aes(factor(ID), Prob, fill = factor(Cluster))) +
   geom_col(width=1) +
   facet_grid(~fct_inorder(as.factor(Population)),
@@ -329,18 +329,18 @@ anc_plot_7K <- ggplot(q_long,
         panel.grid=element_blank(),
         strip.text=element_text(size=7))
 
-anc_plot_7K
+anc_plot_4K
 
 # Lägg till samma färger som tidigare analyser #
 
-cols <- c("forestgreen","dodgerblue4","deeppink","orange2","gold","purple", "red" )
-anc_plot_7KR <- anc_plot_7K + scale_fill_manual(values = cols)
+cols <- c("forestgreen","dodgerblue4","deeppink","orange2" )
+anc_plot_4KR <- anc_plot_4K + scale_fill_manual(values = cols)
 
-anc_plot_7KR
+anc_plot_4KR
 
 # Save this plot for later #
 
-anc_plot_7KR <- recordPlot()
+anc_plot_4KR <- recordPlot()
 
 #Take the 3 plots we saved previously, and plot them together
 
@@ -354,7 +354,7 @@ library(grid)
 
 g1 <- grid.grabExpr(replayPlot(anc_plot_2KR))
 g2 <- grid.grabExpr(replayPlot(anc_plot_3KR))
-g3 <- grid.grabExpr(replayPlot(anc_plot_7KR))
+g3 <- grid.grabExpr(replayPlot(anc_plot_4KR))
 
 # Arrangerar plotterna #
 
