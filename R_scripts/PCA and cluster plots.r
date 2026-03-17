@@ -20,7 +20,6 @@ library("radiator")
 #data
 snp_zostera <- readRDS("eelgrass_data/Manipulated_data/clone_corrected_zostera.rds")
 
-
 #### Test av möjlig PCA-plot ####
 
 library(adegenet)
@@ -42,7 +41,7 @@ s.class(pca$scores,
 
 ### Find clusters with the appropriate K-value ####
 
-grp <- find.clusters(snp_zostera, n.pca=50, max.n=50,scale=FALSE)
+grp <- find.clusters(snp_zostera, n.pca=20, max.n=20,scale=FALSE)
 
 grp$grp %>% as.vector
 
